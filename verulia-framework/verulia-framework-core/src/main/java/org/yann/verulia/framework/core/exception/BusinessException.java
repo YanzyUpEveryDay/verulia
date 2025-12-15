@@ -1,5 +1,7 @@
 package org.yann.verulia.framework.core.exception;
 
+import java.io.Serial;
+
 
 import lombok.Getter;
 import org.yann.verulia.framework.core.enums.IResultCode;

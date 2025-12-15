@@ -21,5 +21,7 @@
         <module>verulia-framework-auth</module>
         <module>verulia-framework-core</module>
         <module>verulia-framework-web</module>
+        <module>verulia-framework-security</module>
+        <module>verulia-framework-mybatis</module>
     </modules>
 </project>

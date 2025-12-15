@@ -1,4 +1,4 @@
-package org.yann.verulia.framework.web.exception;
+package org.yann.verulia.framework.web.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理自定义业务异常 (建议施主后续定义一个 BusinessException)
+     * 处理自定义业务异常
      */
      @ExceptionHandler(BusinessException.class)
      public R<Void> handleBusinessException(BusinessException e) {

@@ -71,12 +71,12 @@ public class WebLogAspect {
         String ip = JakartaServletUtil.getClientIP(request); // 使用 Hutool 获取真实 IP
         String params = getArgs(joinPoint.getArgs()); // 安全获取参数
 
-        log.info("{}================  Request Start  ================{}", LINE_SEPARATOR, LINE_SEPARATOR);
-        log.info("URL          : {}", url);
-        log.info("HTTP Method  : {}", method);
-        log.info("Client IP    : {}", ip);
-        log.info("Class Method : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
-        log.info("Request Args : {}", params);
+        log.info("{}================  请求开始  ================{}", LINE_SEPARATOR, LINE_SEPARATOR);
+        log.info("请求地址     : {}", url);
+        log.info("请求方式     : {}", method);
+        log.info("客户端IP     : {}", ip);
+        log.info("调用方法     : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+        log.info("请求参数     : {}", params);
         log.info("{}--------------------------------------------------{}", LINE_SEPARATOR, LINE_SEPARATOR);
 
         // 3. 执行目标方法
@@ -97,9 +97,9 @@ public class WebLogAspect {
             resultStr = StrUtil.sub(resultStr, 0, 2000) + "...[内容过长截断]";
         }
 
-        log.info("{}Response Args: {}", LINE_SEPARATOR, resultStr);
-        log.info("Time-Consuming : {} ms", timeTaken);
-        log.info("{}================  Request End  ================{}", LINE_SEPARATOR, LINE_SEPARATOR);
+        log.info("{}响应结果    : {}", LINE_SEPARATOR, resultStr);
+        log.info("执行耗时     : {} ms", timeTaken);
+        log.info("{}================  请求结束  ================{}", LINE_SEPARATOR, LINE_SEPARATOR);
 
         MDC.remove("traceId"); // 清除 traceId
         return result;
@@ -129,7 +129,7 @@ public class WebLogAspect {
             // 简单的转 JSON，实际生产中可以配置 ObjectMapper 忽略 password 字段
             return JSONUtil.toJsonStr(safeArgs);
         } catch (Exception e) {
-            return "Arguments parse error";
+            return "参数解析失败";
         }
     }
 }

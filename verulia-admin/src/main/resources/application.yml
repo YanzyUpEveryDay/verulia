@@ -1,6 +1,60 @@
+# 服务配置
 server:
   port: 8012
+  tomcat:
+    # 最大连接数
+    max-connections: 10000
+    # 队列长度
+    accept-count: 1000
+    # 连接超时时间
+    connection-timeout: 20000
+    # Keep-Alive 超时时间，避免连接长期占用
+    keep-alive-timeout: 15000
+    # 一个连接最大处理请求数
+    max-keep-alive-requests: 100
 
+# spring配置
 spring:
   application:
     name: Verulia
+  profiles:
+    active: dev
+  # 虚拟线程
+  threads:
+    virtual:
+      enabled: true
+
+############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+sa-token:
+  # token 名称（同时也是 cookie 名称）
+  token-name: satoken
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: false
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  # Mapper XML 文件的位置 (支持通配符，扫描所有模块的 xml)
+  mapper-locations: classpath*:mapper/**/*.xml
+  # 实体类包名 (配置后在 XML 中可用简写，不用写全限定名)
+  type-aliases-package: org.yann.verulia.**.domain
+  configuration:
+    # 开启驼峰命名自动转换 (user_name -> userName)
+    map-underscore-to-camel-case: true
+    # 开发环境建议开启 SQL 日志打印，生产环境请注释掉或改为 false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      # 逻辑删除字段配置 (1-已删除 0-未删除)
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
