@@ -16,6 +16,21 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- core模块 -->
+            <dependency>
+                <groupId>org.yann</groupId>
+                <artifactId>verulia-framework-core</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- web模块 -->
+            <dependency>
+                <groupId>org.yann</groupId>
+                <artifactId>verulia-framework-web</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
             <!-- 系统模块 -->
             <dependency>
                 <groupId>org.yann</groupId>

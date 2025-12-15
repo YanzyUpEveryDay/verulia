@@ -25,7 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>4.0.0</spring-boot.version>
         <lombok.version>1.18.30</lombok.version>
-        <hutool.version>5.8.24</hutool.version>
+        <hutool.version>5.8.40</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -39,6 +39,7 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- 框架模块依赖管理 -->
             <dependency>
                 <groupId>org.yann</groupId>
                 <artifactId>verulia-framework-bom</artifactId>

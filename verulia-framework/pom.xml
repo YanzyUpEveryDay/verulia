@@ -19,5 +19,7 @@
     <modules>
         <module>verulia-framework-bom</module>
         <module>verulia-framework-auth</module>
+        <module>verulia-framework-core</module>
+        <module>verulia-framework-web</module>
     </modules>
 </project>
