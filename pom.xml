@@ -25,7 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>4.0.0</spring-boot.version>
         <lombok.version>1.18.30</lombok.version>
-        <hutool.version>5.8.40</hutool.version>
+        <hutool.version>7.0.0-M3</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -66,9 +66,9 @@
 
             <!-- Hutool 工具类 -->
             <dependency>
-                <groupId>cn.hutool</groupId>
+                <groupId>cn.hutool.v7</groupId>
                 <artifactId>hutool-all</artifactId>
-                <version>${hutool.version}</version>
+                <version>7.0.0-M3</version>
             </dependency>
 
             <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->

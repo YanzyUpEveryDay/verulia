@@ -1,7 +1,8 @@
 package org.yann.verulia.system.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.crypto.SecureUtil;
+import cn.hutool.v7.core.bean.BeanUtil;
+import cn.hutool.v7.core.collection.CollUtil;
+import cn.hutool.v7.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,9 +13,13 @@ import org.yann.verulia.framework.core.domain.PageResult;
 import org.yann.verulia.framework.core.exception.BusinessException;
 import org.yann.verulia.system.domain.dto.UserDtos;
 import org.yann.verulia.system.domain.entity.SysUser;
+import org.yann.verulia.system.domain.entity.SysUserRole;
 import org.yann.verulia.system.mapper.SysUserMapper;
+import org.yann.verulia.system.mapper.SysUserRoleMapper;
 import org.yann.verulia.system.service.ISysUserService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +31,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
+
+    private final SysUserRoleMapper sysUserRoleMapper;
 
     @Override
     public PageResult<UserDtos.Result> pageQuery(UserDtos.Query queryDto) {
@@ -58,7 +65,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (user == null) {
             return null;
         }
-        return toResult(user);
+        
+        // Fetch roleIds
+        List<SysUserRole> userRoles = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, id));
+        List<Long> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+        
+        return UserDtos.Result.fromSysUser(user, roleIds);
     }
 
     @Override
@@ -78,6 +90,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         this.save(user);
+
+        // Save user roles
+        insertUserRole(user.getId(), createParams.roleIds());
     }
 
     @Override
@@ -95,17 +110,37 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (updateParams.status() != null) user.setStatus(updateParams.status());
 
         this.updateById(user);
+
+        // Update user roles
+        List<Long> roleIds = updateParams.roleIds();
+        if (roleIds != null) {
+            // Delete existing
+            sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, user.getId()));
+            // Insert new
+            insertUserRole(user.getId(), roleIds);
+        }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteUser(Long id) {
+        // Delete user roles
+        sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, id));
+        
         if (!this.removeById(id)) {
             throw new BusinessException("删除失败，用户不存在");
         }
     }
 
+    private void insertUserRole(Long userId, List<Long> roleIds) {
+        if (CollUtil.isNotEmpty(roleIds)) {
+            for (Long roleId : roleIds) {
+                sysUserRoleMapper.insert(new SysUserRole(userId, roleId));
+            }
+        }
+    }
+
     private UserDtos.Result toResult(SysUser user) {
-        return BeanUtil.copyProperties(user, UserDtos.Result.class);
+        return UserDtos.Result.fromSysUser(user);
     }
 }

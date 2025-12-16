@@ -21,7 +21,10 @@
             <groupId>org.yann</groupId>
             <artifactId>verulia-framework-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.yann</groupId>
+            <artifactId>verulia-framework-security</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.yann</groupId>
             <artifactId>verulia-framework-mybatis</artifactId>

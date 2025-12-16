@@ -24,11 +24,6 @@
             <optional>true</optional>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.yann</groupId>-->
-<!--            <artifactId>verulia-framework-security</artifactId>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.yann</groupId>
             <artifactId>verulia-system</artifactId>

@@ -18,7 +18,7 @@
     <dependencies>
         <!-- hutool工具包 -->
         <dependency>
-            <groupId>cn.hutool</groupId>
+            <groupId>cn.hutool.v7</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
 

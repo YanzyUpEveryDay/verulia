@@ -4,6 +4,8 @@ import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.yann.verulia.framework.core.domain.R;
@@ -14,6 +16,7 @@ import org.yann.verulia.framework.core.enums.ResultCode;
  * 配合 Web 模块的 GlobalExceptionHandler 使用
  */
 @Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class SecurityExceptionHandler {
 

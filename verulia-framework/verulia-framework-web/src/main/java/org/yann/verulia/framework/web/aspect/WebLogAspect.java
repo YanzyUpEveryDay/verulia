@@ -1,10 +1,10 @@
 package org.yann.verulia.framework.web.aspect;
 
 
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.servlet.JakartaServletUtil;
-import cn.hutool.json.JSONUtil;
+import cn.hutool.v7.core.data.id.IdUtil;
+import cn.hutool.v7.core.text.StrUtil;
+import cn.hutool.v7.http.server.servlet.ServletUtil;
+import cn.hutool.v7.json.JSONUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +68,7 @@ public class WebLogAspect {
         // 2. 打印请求参数 (Before 的逻辑移到这里统一处理)
         String url = request.getRequestURL().toString();
         String method = request.getMethod();
-        String ip = JakartaServletUtil.getClientIP(request); // 使用 Hutool 获取真实 IP
+        String ip = ServletUtil.getClientIP(request); // 使用 Hutool 获取真实 IP
         String params = getArgs(joinPoint.getArgs()); // 安全获取参数
 
         log.info("{}================  请求开始  ================{}", LINE_SEPARATOR, LINE_SEPARATOR);
