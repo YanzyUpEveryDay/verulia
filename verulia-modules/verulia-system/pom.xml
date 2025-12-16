@@ -26,5 +26,11 @@
             <groupId>org.yann</groupId>
             <artifactId>verulia-framework-mybatis</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

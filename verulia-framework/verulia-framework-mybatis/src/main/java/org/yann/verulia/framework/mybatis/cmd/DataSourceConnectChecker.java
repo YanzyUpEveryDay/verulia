@@ -31,7 +31,7 @@ public class DataSourceConnectChecker implements CommandLineRunner {
     public void run(String... args) {
         log.info(" --->>> 正在检查数据库连接 <<<---");
         try (Connection connection = dataSource.getConnection()) {
-            log.info(" -> 数据库连接成功！URL: {}", connection.getMetaData().getURL());
+            log.info(" -> 数据库连接成功！URL");
         } catch (SQLException e) {
             log.error("========================================================");
             log.error("                   数据库连接失败！                       ");
