@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.yann.verulia.framework.core.domain.R;
+import org.yann.verulia.framework.core.service.SecurityContext;
 import org.yann.verulia.system.domain.dto.LoginBody;
 import org.yann.verulia.system.domain.vo.LoginVo;
 import org.yann.verulia.system.service.ISysLoginService;
@@ -19,6 +20,8 @@ public class SysLoginController {
 
     private final ISysLoginService sysLoginService;
 
+    private final SecurityContext securityContext;
+
     /**
      * 登录
      */
@@ -32,6 +35,6 @@ public class SysLoginController {
      */
     @GetMapping("/getRemoteInfo")
     public R<LoginVo> getRemoteInfo() {
-        return R.ok(sysLoginService.getRemoteInfo(StpUtil.getLoginIdAsLong()));
+        return R.ok(sysLoginService.getRemoteInfo(securityContext.getUserId()));
     }
 }

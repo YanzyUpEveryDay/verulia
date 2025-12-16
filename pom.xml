@@ -26,6 +26,8 @@
         <spring-boot.version>4.0.0</spring-boot.version>
         <lombok.version>1.18.30</lombok.version>
         <hutool.version>7.0.0-M3</hutool.version>
+        <satoken.version>1.44.0</satoken.version>
+        <mybatis-plus.version>3.5.15</mybatis-plus.version>
     </properties>
 
     <dependencyManagement>
@@ -52,7 +54,7 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-bom</artifactId>
-                <version>3.5.15</version>
+                <version>${mybatis-plus.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -68,14 +70,14 @@
             <dependency>
                 <groupId>cn.hutool.v7</groupId>
                 <artifactId>hutool-all</artifactId>
-                <version>7.0.0-M3</version>
+                <version>${hutool.version}</version>
             </dependency>
 
-            <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
+            <!-- Sa-Token 权限认证 -->
             <dependency>
                 <groupId>cn.dev33</groupId>
                 <artifactId>sa-token-spring-boot3-starter</artifactId>
-                <version>1.44.0</version>
+                <version>${satoken.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

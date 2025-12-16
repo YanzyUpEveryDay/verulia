@@ -19,3 +19,4 @@ spring:
       connection-timeout: 30000
       # 空闲连接存活时间 (10分钟)
       idle-timeout: 600000
+
