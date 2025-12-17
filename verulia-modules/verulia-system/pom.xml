@@ -16,6 +16,10 @@
             <groupId>org.yann</groupId>
             <artifactId>verulia-framework-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.yann</groupId>
+            <artifactId>verulia-framework-auth</artifactId>
+        </dependency>
         <!-- 框架Web依赖 -->
         <dependency>
             <groupId>org.yann</groupId>
@@ -29,7 +33,6 @@
             <groupId>org.yann</groupId>
             <artifactId>verulia-framework-mybatis</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

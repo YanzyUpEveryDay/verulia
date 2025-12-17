@@ -40,6 +40,12 @@
 
             <dependency>
                 <groupId>org.yann</groupId>
+                <artifactId>verulia-framework-auth</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.yann</groupId>
                 <artifactId>verulia-framework-mybatis</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>

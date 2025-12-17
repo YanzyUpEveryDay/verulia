@@ -1,6 +1,5 @@
 package org.yann.verulia.system.service;
 
-import org.yann.verulia.system.domain.dto.LoginBody;
 import org.yann.verulia.system.domain.vo.LoginVo;
 
 /**
@@ -9,14 +8,6 @@ import org.yann.verulia.system.domain.vo.LoginVo;
  * @author Yann
  */
 public interface ISysLoginService {
-
-    /**
-     * 登录
-     *
-     * @param loginBody 登录参数
-     * @return 登录结果
-     */
-    LoginVo login(LoginBody loginBody);
 
     /**
      * 获取当前登录用户信息

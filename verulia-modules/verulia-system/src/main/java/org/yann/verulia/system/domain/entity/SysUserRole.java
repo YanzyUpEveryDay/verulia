@@ -1,5 +1,6 @@
 package org.yann.verulia.system.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class SysUserRole implements Serializable {
     /**
      * 用户ID
      */
+    @TableId
     private Long userId;
 
     /**
