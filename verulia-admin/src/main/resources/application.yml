@@ -83,3 +83,10 @@ mybatis-plus:
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
+
+# 微信小程序配置
+wx:
+  miniapp:
+    appid: 123456
+    secret: 124678
+    msg-data-format: JSON

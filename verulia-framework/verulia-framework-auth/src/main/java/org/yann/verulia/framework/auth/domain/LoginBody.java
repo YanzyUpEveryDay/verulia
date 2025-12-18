@@ -37,6 +37,7 @@ public class LoginBody implements Serializable {
     /**
      * 验证码 (密码模式/短信模式)
      * 图形验证码 或 短信验证码
+     * 微信小程序code
      */
     private String code;
 
