@@ -27,13 +27,13 @@ spring:
   data:
     redis:
       # Redis数据库索引（默认为0）
-      database: 0
+      database: 4
       # Redis服务器地址
-      host: 192.168.10.242
+      host: 121.43.230.245
       # Redis服务器连接端口
       port: 6379
       # Redis服务器连接密码（默认为空）
-      password: jjsd2016
+      password: redis_GK4EJ7
       # 连接超时时间
       timeout: 10s
       lettuce:
@@ -87,6 +87,6 @@ mybatis-plus:
 # 微信小程序配置
 wx:
   miniapp:
-    appid: 123456
-    secret: 124678
+    appid: wx42412dc8b97d09e0
+    secret: d4d2b38de2eef9dd01e5529cd9eb92b0
     msg-data-format: JSON

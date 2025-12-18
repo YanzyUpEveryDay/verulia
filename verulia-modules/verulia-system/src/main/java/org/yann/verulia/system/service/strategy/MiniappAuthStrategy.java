@@ -47,7 +47,7 @@ public class MiniappAuthStrategy implements IAuthStrategy {
     public Long authenticate(LoginBody loginBody) {
         String code = loginBody.getCode();
         if (code == null || code.isBlank()) {
-            throw new AuthException("JSCode不能为空");
+            throw new AuthException("认证Code不能为空");
         }
 
         WxMaJscode2SessionResult session;

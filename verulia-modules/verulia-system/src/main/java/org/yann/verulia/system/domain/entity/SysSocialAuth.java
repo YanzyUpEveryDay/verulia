@@ -38,6 +38,11 @@ public class SysSocialAuth implements Serializable {
     private String openid;
 
     /**
+     * 联合唯一标识
+     */
+    private String unionid;
+
+    /**
      * 来源 (miniapp, wechat, etc.)
      */
     private String source;

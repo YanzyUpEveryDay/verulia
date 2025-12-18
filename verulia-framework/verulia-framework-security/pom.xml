@@ -17,6 +17,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.yann</groupId>
+            <artifactId>verulia-framework-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yann</groupId>
+            <artifactId>verulia-framework-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot3-starter</artifactId>
             <exclusions>
@@ -48,16 +58,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.yann</groupId>
-            <artifactId>verulia-framework-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.yann</groupId>
-            <artifactId>verulia-framework-core</artifactId>
         </dependency>
 
         <dependency>
