@@ -23,11 +23,17 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <spring-boot.version>4.0.0</spring-boot.version>
         <lombok.version>1.18.30</lombok.version>
         <hutool.version>7.0.0-M3</hutool.version>
         <satoken.version>1.44.0</satoken.version>
         <mybatis-plus.version>3.5.15</mybatis-plus.version>
+
+        <!-- Maven 插件版本管理 -->
+        <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
+        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -96,6 +102,20 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+
+                <!-- Maven Dependency Plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency-plugin.version}</version>
+                </plugin>
+
+                <!-- Maven Jar Plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

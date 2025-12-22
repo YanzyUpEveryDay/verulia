@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.yann.verulia.framework.auth.domain.AuthUser;
 import org.yann.verulia.framework.auth.domain.LoginBody;
 import org.yann.verulia.framework.auth.exception.AuthException;
 import org.yann.verulia.framework.auth.strategy.IAuthStrategy;
@@ -44,7 +45,7 @@ public class MiniappAuthStrategy implements IAuthStrategy {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long authenticate(LoginBody loginBody) {
+    public AuthUser authenticate(LoginBody loginBody) {
         String code = loginBody.getCode();
         if (code == null || code.isBlank()) {
             throw new AuthException("认证Code不能为空");
@@ -67,10 +68,12 @@ public class MiniappAuthStrategy implements IAuthStrategy {
                 .eq(SysSocialAuth::getSource, "miniapp")
                 .eq(SysSocialAuth::getOpenid, openid));
         if (socialAuth != null) {
-            return socialAuth.getUserId();
+            socialAuth.getUserId();
         } else {
-            return registerAndBind(openid);
+            registerAndBind(openid);
         }
+
+        return null;
     }
 
     private Long registerAndBind(String openid) {

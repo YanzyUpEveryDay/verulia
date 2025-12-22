@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
+import org.yann.verulia.framework.auth.domain.AuthUser;
 import org.yann.verulia.framework.auth.domain.LoginBody;
+import org.yann.verulia.framework.auth.domain.LoginConfig;
 import org.yann.verulia.framework.auth.exception.AuthException;
 import org.yann.verulia.framework.auth.strategy.IAuthStrategy;
 import org.yann.verulia.framework.core.exception.BusinessException;
@@ -34,7 +36,7 @@ public class PasswordAuthStrategy implements IAuthStrategy {
     }
 
     @Override
-    public Long authenticate(LoginBody loginBody) {
+    public AuthUser authenticate(LoginBody loginBody) {
         String username = loginBody.getUsername();
         String password = loginBody.getPassword();
 
@@ -61,6 +63,18 @@ public class PasswordAuthStrategy implements IAuthStrategy {
         }
 
         eventPublisher.publishEvent(new LoginLogEvent(this, username, true, "登录成功"));
-        return user.getId();
+        return AuthUser.builder()
+                .userId(user.getId())
+                .username(username)
+                .loginType(getLoginType())
+                .build();
+    }
+
+    @Override
+    public LoginConfig getLoginConfig() {
+        return LoginConfig.builder()
+                .device("PC")
+                .timeout(60 * 60 * 2L)  // 两个小时
+                .build();
     }
 }

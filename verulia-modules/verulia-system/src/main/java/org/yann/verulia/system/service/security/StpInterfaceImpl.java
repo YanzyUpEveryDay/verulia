@@ -1,4 +1,4 @@
-package org.yann.verulia.system.security;
+package org.yann.verulia.system.service.security;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -39,7 +39,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        Long userId;
+        long userId;
         try {
             userId = Long.parseLong(loginId.toString());
         } catch (NumberFormatException e) {

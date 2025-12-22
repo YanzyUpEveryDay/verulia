@@ -13,7 +13,10 @@ public class SaTokenSecurityContext implements SecurityContext {
 
     @Override
     public Long getUserId() {
-        return StpUtil.getLoginIdAsLong();
+        if (StpUtil.isLogin()) {
+            return StpUtil.getLoginIdAsLong();
+        }
+        return null;
     }
 
     @Override
