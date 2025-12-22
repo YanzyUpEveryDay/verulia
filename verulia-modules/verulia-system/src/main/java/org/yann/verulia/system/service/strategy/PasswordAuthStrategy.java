@@ -75,6 +75,7 @@ public class PasswordAuthStrategy implements IAuthStrategy {
         return LoginConfig.builder()
                 .device("PC")
                 .timeout(60 * 60 * 2L)  // 两个小时
+                .isConcurrent(true)
                 .build();
     }
 }
