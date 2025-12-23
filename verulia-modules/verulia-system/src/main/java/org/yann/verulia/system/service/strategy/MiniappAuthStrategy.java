@@ -64,19 +64,19 @@ public class MiniappAuthStrategy implements IAuthStrategy {
             throw new AuthException("微信登录失败: 未能获取OpenID");
         }
 
+        /* 第三方认证 */
         SysSocialAuth socialAuth = sysSocialAuthMapper.selectOne(new LambdaQueryWrapper<SysSocialAuth>()
                 .eq(SysSocialAuth::getSource, "miniapp")
-                .eq(SysSocialAuth::getOpenid, openid));
-        if (socialAuth != null) {
-            socialAuth.getUserId();
-        } else {
-            registerAndBind(openid);
+                .eq(SysSocialAuth::getOpenid, openid)
+        );
+        if (null == socialAuth) {
+            return registerAndBind(openid);
         }
-
-        return null;
+        return AuthUser.builder()
+                .build();
     }
 
-    private Long registerAndBind(String openid) {
+    private AuthUser registerAndBind(String openid) {
         SysUser user = new SysUser();
         user.setUsername("wx_" + openid.substring(0, 8));
         user.setNickname("微信用户");
@@ -89,6 +89,10 @@ public class MiniappAuthStrategy implements IAuthStrategy {
         auth.setOpenid(openid);
         auth.setSource("miniapp");
         sysSocialAuthMapper.insert(auth);
-        return user.getId();
+        return AuthUser.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .loginType(getLoginType())
+                .build();
     }
 }
