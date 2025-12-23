@@ -26,8 +26,8 @@ public class LoginConfig implements Serializable {
     private Long timeout;
 
     /** 此次登录的 Token 最低活跃频率 (单位: 秒)，-1 代表跟随全局 */
-    private Long activeTimeout;
+    private Long activeTimeout = -1L;
 
     /** 是否允许并发登录 */
-    private Boolean isConcurrent;
+    private Boolean isConcurrent = false;
 }

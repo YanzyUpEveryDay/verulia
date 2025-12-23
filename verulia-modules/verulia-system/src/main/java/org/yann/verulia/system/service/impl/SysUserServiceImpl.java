@@ -18,8 +18,6 @@ import org.yann.verulia.system.mapper.SysUserMapper;
 import org.yann.verulia.system.mapper.SysUserRoleMapper;
 import org.yann.verulia.system.service.ISysUserService;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +64,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             return null;
         }
         
-        // Fetch roleIds
         List<SysUserRole> userRoles = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, id));
         List<Long> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
         
@@ -90,8 +87,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         this.save(user);
-
-        // Save user roles
         insertUserRole(user.getId(), createParams.roleIds());
     }
 
@@ -124,7 +119,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteUser(Long id) {
-        // Delete user roles
         sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, id));
         
         if (!this.removeById(id)) {

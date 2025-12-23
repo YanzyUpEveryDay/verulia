@@ -1,24 +1,15 @@
 package org.yann.verulia.system.service.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.yann.verulia.framework.core.exception.BusinessException;
-import org.yann.verulia.system.domain.dto.UserDtos;
-import org.yann.verulia.system.domain.entity.SysRole;
 import org.yann.verulia.system.domain.entity.SysUser;
-import org.yann.verulia.system.domain.entity.SysUserRole;
 import org.yann.verulia.system.domain.vo.LoginVo;
-import org.yann.verulia.system.mapper.SysRoleMapper;
 import org.yann.verulia.system.mapper.SysUserMapper;
-import org.yann.verulia.system.mapper.SysUserRoleMapper;
 import org.yann.verulia.system.service.ISysLoginService;
+import org.yann.verulia.system.service.ISysRoleService;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 /**
  * 登录 Service 实现
@@ -30,9 +21,7 @@ import java.util.stream.Collectors;
 public class SysLoginServiceImpl implements ISysLoginService {
 
     private final SysUserMapper sysUserMapper;
-    private final SysUserRoleMapper sysUserRoleMapper;
-    private final SysRoleMapper sysRoleMapper;
-    private final ApplicationEventPublisher eventPublisher;
+    private final ISysRoleService roleService;
 
     @Override
     public LoginVo getRemoteInfo(Long userId) {
@@ -48,24 +37,13 @@ public class SysLoginServiceImpl implements ISysLoginService {
      * 构建登录响应
      */
     private LoginVo buildLoginVo(SysUser user) {
-        List<SysUserRole> userRoles = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>()
-            .eq(SysUserRole::getUserId, user.getId()));
-        
-        List<String> roleKeys = Collections.emptyList();
-        if (!userRoles.isEmpty()) {
-            List<Long> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
-            List<SysRole> roles = sysRoleMapper.selectByIds(roleIds);
-            roleKeys = roles.stream()
-                .map(SysRole::getRoleKey)
-                .collect(Collectors.toList());
-        }
+        /* 获取用户角色 */
+        Set<String> userRoleKeys = roleService.getUserRoleKeys(user.getId());
+        /* #TODO 预留用户全权限 */
 
-        // 转换用户响应
-        UserDtos.Result userInfo = UserDtos.Result.fromSysUser(user);
-        return new LoginVo(
-            StpUtil.getTokenValue(),
-            userInfo,
-            roleKeys
-        );
+        return LoginVo.builder()
+            .user(LoginVo.UserInfoVo.fromSysUser(user))
+            .roles(userRoleKeys)
+            .build();
     }
 }

@@ -1,9 +1,11 @@
 package org.yann.verulia.system.service.impl;
 
 import cn.hutool.v7.core.bean.BeanUtil;
+import cn.hutool.v7.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import org.yann.verulia.system.mapper.SysUserRoleMapper;
 import org.yann.verulia.system.service.ISysRoleService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -118,5 +121,21 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         if (this.exists(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleKey, roleKey))) {
             throw new BusinessException("权限字符已存在");
         }
+    }
+
+    @Override
+    public Set<String> getUserRoleKeys(Long userId) {
+        List<SysUserRole> userRoles = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>()
+                .eq(SysUserRole::getUserId, userId));
+
+        Set<String> roleKeys = Sets.newHashSet();
+        if (CollUtil.isNotEmpty(userRoles)) {
+            Set<Long> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toSet());
+            List<SysRole> sysRoles = baseMapper.selectByIds(roleIds);
+            if (CollUtil.isNotEmpty(sysRoles)) {
+                roleKeys = sysRoles.stream().map(SysRole::getRoleKey).collect(Collectors.toSet());
+            }
+        }
+        return roleKeys;
     }
 }

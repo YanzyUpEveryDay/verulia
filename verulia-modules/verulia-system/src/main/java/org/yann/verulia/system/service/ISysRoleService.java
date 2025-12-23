@@ -5,6 +5,8 @@ import org.yann.verulia.framework.core.domain.PageResult;
 import org.yann.verulia.system.domain.dto.RoleDtos;
 import org.yann.verulia.system.domain.entity.SysRole;
 
+import java.util.Set;
+
 /**
  * 角色 Service 接口
  *
@@ -48,4 +50,11 @@ public interface ISysRoleService extends IService<SysRole> {
      * @param id 角色ID
      */
     void deleteRole(Long id);
+
+    /**
+     * 获取用户角色标识
+     * @param userId 用户id
+     * @return 角色标识s
+     */
+    Set<String> getUserRoleKeys(Long userId);
 }
