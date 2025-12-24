@@ -5,6 +5,7 @@ CREATE TABLE `sys_user`
     `username`    varchar(50)  NOT NULL COMMENT '用户名',
     `password`    varchar(100) NOT NULL COMMENT '密码',
     `nickname`    varchar(50)  DEFAULT NULL COMMENT '昵称',
+    `avatar`      varchar(500) DEFAULT NULL COMMENT '头像',
     `email`       varchar(100) DEFAULT NULL COMMENT '邮箱',
     `phone`       varchar(20)  DEFAULT NULL COMMENT '手机号',
     `sex`         tinyint      DEFAULT '0' COMMENT '性别 0=未知 1=男 2=女',
