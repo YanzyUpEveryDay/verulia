@@ -1,0 +1,59 @@
+/* 统计卡片样式 */
+.card {
+  height: 100%;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.iconWrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statistic {
+  flex: 1;
+}
+
+.title {
+  color: #666;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.trendUp,
+.trendDown {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.trendUp {
+  color: #52c41a;
+}
+
+.trendDown {
+  color: #ff4d4f;
+}
+
+.trendLabel {
+  margin-left: 4px;
+  color: #999;
+  font-weight: 400;
+}

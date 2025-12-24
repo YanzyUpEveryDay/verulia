@@ -1,0 +1,73 @@
+/* 首页样式 */
+.container {
+  padding: 0;
+}
+
+.welcome {
+  margin-bottom: 24px;
+  padding: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+}
+
+.welcomeTitle {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.welcomeDesc {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.statisticRow {
+  margin-bottom: 24px;
+}
+
+.chartRow {
+  margin-bottom: 24px;
+}
+
+.actionCol {
+  margin-bottom: 24px;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .welcome {
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .welcomeTitle {
+    font-size: 22px;
+  }
+
+  .welcomeDesc {
+    font-size: 13px;
+  }
+
+  .statisticRow,
+  .actionCol,
+  .chartRow {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome {
+    padding: 20px;
+  }
+
+  .welcomeTitle {
+    font-size: 20px;
+  }
+
+  .welcomeDesc {
+    font-size: 12px;
+  }
+}

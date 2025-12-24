@@ -1,0 +1,40 @@
+/* 活动列表样式 */
+.card {
+  height: 100%;
+  border-radius: 8px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.activityItem {
+  padding-bottom: 8px;
+}
+
+.activityHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.activityTitle {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.activityTime {
+  font-size: 12px;
+  color: #999;
+}
+
+.activityDesc {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+  line-height: 1.6;
+}
