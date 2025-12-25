@@ -1,1 +1,2 @@
 org.yann.verulia.framework.web.aspect.WebLogAspect
+org.yann.verulia.framework.web.config.JacksonConfig
