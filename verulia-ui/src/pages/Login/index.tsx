@@ -3,7 +3,6 @@ import { Form, Input, Button, message, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { authApi } from '@/api/auth'
-import { useAuthStore } from '@/store/auth'
 import { tokenStorage } from '@/utils/storage'
 import styles from './Login.module.css'
 
@@ -18,7 +17,6 @@ function Login() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const navigate = useNavigate()
   const location = useLocation()
-  const setUserInfo = useAuthStore((state) => state.setUserInfo)
 
   // 获取跳转前的路径，登录成功后跳回去
   const from = (location.state as any)?.from || '/home'
@@ -43,14 +41,8 @@ function Login() {
         password: values.password,
       })
 
-      console.log(token)
-      
       // 存储token
       tokenStorage.setToken(token)
-      
-      // 获取用户信息
-      const userInfo = await authApi.getUserInfo()
-      setUserInfo(userInfo)
       
       message.success('登录成功！')
       navigate(from, { replace: true })

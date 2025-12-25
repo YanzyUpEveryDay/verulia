@@ -11,6 +11,7 @@ import {
   CrownOutlined,
 } from '@ant-design/icons'
 import { useAuthStore } from '@/store/auth'
+import { tokenStorage } from '@/utils/storage'
 import styles from './MainLayout.module.css'
 
 const { Header, Sider, Content } = Layout
@@ -117,7 +118,9 @@ function MainLayout() {
   }
 
   const handleLogout = () => {
+    // 清除用户信息和 token
     clearUserInfo()
+    tokenStorage.removeToken()
     navigate('/login')
   }
 

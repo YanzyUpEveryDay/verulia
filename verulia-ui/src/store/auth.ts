@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 
 interface UserInfo {
   user: {
@@ -16,19 +15,17 @@ interface UserInfo {
 
 interface AuthStore {
   userInfo: UserInfo | null
-  setUserInfo: (userInfo: UserInfo) => void
+  loading: boolean
+  setUserInfo: (userInfo: UserInfo | null) => void
+  setLoading: (loading: boolean) => void
   clearUserInfo: () => void
 }
 
-export const useAuthStore = create<AuthStore>()(
-  persist(
-    (set) => ({
-      userInfo: null,
-      setUserInfo: (userInfo) => set({ userInfo }),
-      clearUserInfo: () => set({ userInfo: null }),
-    }),
-    {
-      name: 'auth-storage',
-    }
-  )
-)
+// 不使用 persist 持久化用户信息，每次从后端获取最新数据
+export const useAuthStore = create<AuthStore>()((set) => ({
+  userInfo: null,
+  loading: false,
+  setUserInfo: (userInfo) => set({ userInfo }),
+  setLoading: (loading) => set({ loading }),
+  clearUserInfo: () => set({ userInfo: null }),
+}))
