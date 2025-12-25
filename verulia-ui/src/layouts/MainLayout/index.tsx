@@ -4,14 +4,12 @@ import { Layout, Menu, Avatar, Dropdown, Drawer } from 'antd'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  HomeOutlined,
   UserOutlined,
-  TeamOutlined,
   LogoutOutlined,
-  CrownOutlined,
 } from '@ant-design/icons'
 import { useAuthStore } from '@/store/auth'
 import { tokenStorage } from '@/utils/storage'
+import { routes, getMenuItems } from '@/router/routes'
 import styles from './MainLayout.module.css'
 
 const { Header, Sider, Content } = Layout
@@ -23,6 +21,9 @@ function MainLayout() {
   const navigate = useNavigate()
   const location = useLocation()
   const { userInfo, clearUserInfo } = useAuthStore()
+
+  // 从统一配置生成菜单
+  const menuItems = getMenuItems(routes)
 
   // 监听屏幕尺寸变化
   useEffect(() => {
@@ -43,43 +44,6 @@ function MainLayout() {
     return () => window.removeEventListener('resize', handleResize)
   }, [drawerVisible])
 
-  const menuItems = [
-    {
-      key: '/home',
-      icon: <HomeOutlined />,
-      label: '首页',
-    },
-    {
-      key: '/member',
-      icon: <CrownOutlined />,
-      label: '会员管理',
-      children: [
-        {
-          key: '/member/list',
-          icon: <UserOutlined />,
-          label: '会员列表',
-        },
-      ],
-    },
-    {
-      key: '/system',
-      icon: <TeamOutlined />,
-      label: '系统管理',
-      children: [
-        {
-          key: '/system/user',
-          icon: <UserOutlined />,
-          label: '用户管理',
-        },
-        {
-          key: '/system/role',
-          icon: <TeamOutlined />,
-          label: '角色管理',
-        },
-      ],
-    },
-  ]
-
   // 根据当前路径获取选中的菜单项
   const selectedKeys = [location.pathname]
   
@@ -89,9 +53,9 @@ function MainLayout() {
     const keys: string[] = []
     // 遍历菜单项，找到包含当前路径的父菜单
     menuItems.forEach(item => {
-      if (item.children) {
-        const hasActiveChild = item.children.some((child: any) => child.key === path)
-        if (hasActiveChild) {
+      if (item && 'children' in item && item.children) {
+        const hasActiveChild = item.children.some((child: any) => child && 'key' in child && child.key === path)
+        if (hasActiveChild && 'key' in item) {
           keys.push(item.key as string)
         }
       }
