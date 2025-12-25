@@ -23,6 +23,9 @@ spring:
   threads:
     virtual:
       enabled: true
+  # main
+  main:
+    allow-bean-definition-overriding: true
   # Redis 配置
   data:
     redis:
