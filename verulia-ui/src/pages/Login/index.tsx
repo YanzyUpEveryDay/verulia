@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { authApi } from '@/api/auth'
 import { useAuthStore } from '@/store/auth'
+import { tokenStorage } from '@/utils/storage'
 import styles from './Login.module.css'
 
 interface LoginForm {
@@ -38,7 +39,7 @@ function Login() {
       })
       
       // 存储token
-      localStorage.setItem('token', token)
+      tokenStorage.setToken(token)
       
       // 获取用户信息
       const userInfo = await authApi.getUserInfo()
@@ -47,7 +48,8 @@ function Login() {
       message.success('登录成功！')
       navigate('/home')
     } catch (error: any) {
-      message.error(error.message || '登录失败，请检查用户名和密码')
+      // 错误提示已在拦截器中统一处理
+      console.error('登录失败:', error)
     } finally {
       setLoading(false)
     }

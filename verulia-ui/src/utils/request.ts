@@ -1,111 +1,123 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { message } from 'antd'
+import type {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
+import {message, Modal} from 'antd'
+import { tokenStorage } from './storage'
 
 // 后端统一响应结构
 interface ApiResponse<T = any> {
-  code: number
-  message: string
-  data: T
+    code: number
+    message: string
+    data: T
 }
 
 class HttpClient {
-  private instance: AxiosInstance
+    private instance: AxiosInstance
 
-  constructor() {
-    this.instance = axios.create({
-      baseURL: '/api',
-      timeout: 30000,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    constructor() {
+        this.instance = axios.create({
+            baseURL: '/api',
+            timeout: 30000,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
 
-    this.setupInterceptors()
-  }
+        this.setupInterceptors()
+    }
 
-  private setupInterceptors() {
-    // 请求拦截器
-    this.instance.interceptors.request.use(
-      (config) => {
-        // 从 localStorage 获取 token 并添加到请求头
-        const token = localStorage.getItem('token')
-        if (token && config.headers) {
-          // Sa-Token配置: token-name=satoken
-          config.headers['satoken'] = `Bearer ${token}`
-        }
-        return config
-      },
-      (error) => {
-        return Promise.reject(error)
-      }
-    )
+    private setupInterceptors() {
+        // 请求拦截器
+        this.instance.interceptors.request.use(
+            (config) => {
+                // 从 localStorage 获取 token 并添加到请求头
+                const token = tokenStorage.getToken()
+                if (token && config.headers) {
+                    // Sa-Token配置: token-name=satoken
+                    config.headers['satoken'] = `Bearer ${token}`
+                }
+                return config
+            },
+            (error) => {
+                return Promise.reject(error)
+            }
+        )
 
-    // 响应拦截器
-    this.instance.interceptors.response.use(
-      (response: AxiosResponse<ApiResponse>) => {
-        const { data } = response
-        
-        // 如果返回的状态码不是200，统一处理错误
-        if (data.code !== 200) {
-          message.error(data.message || '请求失败')
-          return Promise.reject(new Error(data.message || '请求失败'))
-        }
+        // 响应拦截器
+        this.instance.interceptors.response.use(
+            (response: AxiosResponse<ApiResponse>) => {
+                const { data, status } = response
 
-        // 直接返回data字段，API层不需要再处理response结构
-        return data.data as any
-      },
-      (error) => {
-        // 处理 HTTP 错误
-        if (error.response) {
-          switch (error.response.status) {
-            case 401:
-              message.error('未授权，请重新登录')
-              // 清除本地存储的认证信息
-              localStorage.removeItem('token')
-              localStorage.removeItem('auth-storage')
-              // 跳转到登录页
-              window.location.href = '/login'
-              break
-            case 403:
-              message.error('拒绝访问')
-              break
-            case 404:
-              message.error('请求的资源不存在')
-              break
-            case 500:
-              message.error('服务器错误')
-              break
-            default:
-              message.error(error.response.data?.message || '请求失败')
-          }
-        } else if (error.request) {
-          message.error('网络错误，请检查网络连接')
-        } else {
-          message.error('请求配置错误')
-        }
+                // HTTP状态码异常处理(非2xx)
+                if (status < 200 || status >= 300) {
+                    const errorMsg = data?.message || `请求失败(${status})`
+                    message.error(errorMsg)
+                    return Promise.reject(new Error(errorMsg))
+                }
 
-        return Promise.reject(error)
-      }
-    )
-  }
+                // 统一通过业务状态码 data.code 判断
+                switch (data.code) {
+                    case 200:
+                        // 请求成功,返回数据
+                        return data.data as any
+                    case 401:
+                        // 未授权,清除认证信息并跳转登录
+                        tokenStorage.removeToken()
+                        Modal.warning({
+                            title: '登录已过期',
+                            content: '您的登录信息已过期,请重新登录',
+                            okText: '确认',
+                            onOk: () => {
+                                window.location.href = '/login'
+                            },
+                        })
+                        return Promise.reject(new Error(data.message || '未授权'))
 
-  // 封装后的方法直接返回data，不需要再包装ApiResponse
-  public get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.instance.get(url, config)
-  }
+                    case 403:
+                        message.error(data.message || '拒绝访问')
+                        return Promise.reject(new Error(data.message || '拒绝访问'))
 
-  public post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return this.instance.post(url, data, config)
-  }
+                    case 404:
+                        message.error(data.message || '请求的资源不存在')
+                        return Promise.reject(new Error(data.message || '请求的资源不存在'))
 
-  public put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return this.instance.put(url, data, config)
-  }
+                    case 500:
+                        message.error(data.message || '服务器错误')
+                        return Promise.reject(new Error(data.message || '服务器错误'))
 
-  public delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return this.instance.delete(url, config)
-  }
+                    default:
+                        // 其他业务错误
+                        message.error(data.message || '请求失败')
+                        return Promise.reject(new Error(data.message || '请求失败'))
+                }
+            },
+            (error) => {
+                // 只处理网络错误和请求配置错误
+                if (error.request && !error.response) {
+                    message.error('网络错误,请检查网络连接')
+                } else if (!error.request) {
+                    message.error('请求配置错误')
+                }
+                return Promise.reject(error)
+            }
+        )
+    }
+
+    // 封装后的方法直接返回data，不需要再包装ApiResponse
+    public get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+        return this.instance.get(url, config)
+    }
+
+    public post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+        return this.instance.post(url, data, config)
+    }
+
+    public put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+        return this.instance.put(url, data, config)
+    }
+
+    public delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+        return this.instance.delete(url, config)
+    }
 }
 
 export const httpClient = new HttpClient()

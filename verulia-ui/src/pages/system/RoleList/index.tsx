@@ -73,7 +73,8 @@ function RoleList() {
       setDataSource(result.list)
       setTotal(result.total)
     } catch (error: any) {
-      message.error(error.message || '获取角色列表失败')
+      // 错误提示已在拦截器中统一处理，这里只做错误日志记录
+      console.error('获取角色列表失败:', error)
     } finally {
       setLoading(false)
     }
@@ -105,7 +106,8 @@ function RoleList() {
           message.success('删除成功')
           fetchData()
         } catch (error: any) {
-          message.error(error.message || '删除失败')
+          // 错误提示已在拦截器中统一处理
+          console.error('删除角色失败:', error)
         }
       },
     })
@@ -124,7 +126,8 @@ function RoleList() {
       setModalVisible(false)
       fetchData()
     } catch (error: any) {
-      message.error(error.message || '操作失败')
+      // 错误提示已在拦截器中统一处理
+      console.error('操作失败:', error)
     }
   }
 

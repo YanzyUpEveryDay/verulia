@@ -1,4 +1,4 @@
-import { Card, Timeline, Badge } from 'antd'
+import { Card, Timeline } from 'antd'
 import styles from './ActivityList.module.css'
 
 /**
