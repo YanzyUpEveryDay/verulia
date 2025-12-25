@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Form, Input, Button, message, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { authApi } from '@/api/auth'
 import { useAuthStore } from '@/store/auth'
 import { tokenStorage } from '@/utils/storage'
@@ -17,7 +17,11 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const navigate = useNavigate()
+  const location = useLocation()
   const setUserInfo = useAuthStore((state) => state.setUserInfo)
+
+  // 获取跳转前的路径，登录成功后跳回去
+  const from = (location.state as any)?.from || '/home'
 
   // 鼠标跟随效果
   useEffect(() => {
@@ -28,6 +32,7 @@ function Login() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  /** 登录 */
   const onFinish = async (values: LoginForm) => {
     setLoading(true)
     try {
@@ -37,6 +42,8 @@ function Login() {
         username: values.username,
         password: values.password,
       })
+
+      console.log(token)
       
       // 存储token
       tokenStorage.setToken(token)
@@ -46,7 +53,7 @@ function Login() {
       setUserInfo(userInfo)
       
       message.success('登录成功！')
-      navigate('/home')
+      navigate(from, { replace: true })
     } catch (error: any) {
       // 错误提示已在拦截器中统一处理
       console.error('登录失败:', error)
@@ -118,7 +125,6 @@ function Login() {
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                   <Checkbox>记住我</Checkbox>
                 </Form.Item>
-                {/* <a href="#" style={{ color: '#1890ff' }}>忘记密码？</a> */}
               </div>
             </Form.Item>
 
@@ -133,11 +139,6 @@ function Login() {
               </Button>
             </Form.Item>
           </Form>
-          
-          {/* <div className={styles.footer}>
-            还没有账号？
-            <a href="#" className={styles.footerLink}>立即注册</a>
-          </div> */}
         </div>
       </div>
       

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
-import {message, Modal} from 'antd'
+import { message, Modal } from 'antd'
 import { tokenStorage } from './storage'
 
 // 后端统一响应结构
@@ -31,7 +31,7 @@ class HttpClient {
             (config) => {
                 // 从 localStorage 获取 token 并添加到请求头
                 const token = tokenStorage.getToken()
-                if (token && config.headers) {
+                if (token) {
                     // Sa-Token配置: token-name=satoken
                     config.headers['satoken'] = `Bearer ${token}`
                 }
@@ -46,7 +46,7 @@ class HttpClient {
         this.instance.interceptors.response.use(
             (response: AxiosResponse<ApiResponse>) => {
                 const { data, status } = response
-
+                console.log(response)
                 // HTTP状态码异常处理(非2xx)
                 if (status < 200 || status >= 300) {
                     const errorMsg = data?.message || `请求失败(${status})`

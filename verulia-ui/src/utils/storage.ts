@@ -5,7 +5,7 @@
 
 // 存储 key 常量
 const STORAGE_KEYS = {
-  TOKEN: 'token'
+  TOKEN: 'token',
 } as const
 
 /**

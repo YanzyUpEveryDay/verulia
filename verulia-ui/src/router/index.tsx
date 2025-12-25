@@ -4,12 +4,13 @@ import Layout from '@/layouts/MainLayout'
 import Home from '@/pages/Home'
 import UserList from '@/pages/system/UserList'
 import RoleList from '@/pages/system/RoleList'
+import AuthGuard from './AuthGuard'
 
 function AppRouter() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Layout />}>
+      <Route path="/" element={<AuthGuard><Layout /></AuthGuard>}>
         <Route index element={<Navigate to="/home" replace />} />
         <Route path="home" element={<Home />} />
         <Route path="system/user" element={<UserList />} />

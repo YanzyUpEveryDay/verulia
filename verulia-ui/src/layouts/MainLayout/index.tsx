@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Layout, Menu, Avatar, Dropdown, Drawer } from 'antd'
 import {
   MenuFoldOutlined,
@@ -19,6 +19,7 @@ function MainLayout() {
   const [isMobile, setIsMobile] = useState(false)
   const [drawerVisible, setDrawerVisible] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const { userInfo, clearUserInfo } = useAuthStore()
 
   // 监听屏幕尺寸变化
@@ -65,6 +66,26 @@ function MainLayout() {
     },
   ]
 
+  // 根据当前路径获取选中的菜单项
+  const selectedKeys = [location.pathname]
+  
+  // 根据当前路径自动计算需要展开的父菜单
+  const getOpenKeys = () => {
+    const path = location.pathname
+    const keys: string[] = []
+    // 遍历菜单项，找到包含当前路径的父菜单
+    menuItems.forEach(item => {
+      if (item.children) {
+        const hasActiveChild = item.children.some((child: any) => child.key === path)
+        if (hasActiveChild) {
+          keys.push(item.key as string)
+        }
+      }
+    })
+    return keys
+  }
+  const openKeys = getOpenKeys()
+
   const handleMenuClick = ({ key }: { key: string }) => {
     navigate(key)
     // 移动端点击菜单后关闭抽屉
@@ -105,7 +126,8 @@ function MainLayout() {
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={['/home']}
+        selectedKeys={selectedKeys}
+        defaultOpenKeys={openKeys}
         items={menuItems}
         onClick={handleMenuClick}
       />
