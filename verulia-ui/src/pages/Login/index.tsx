@@ -38,7 +38,7 @@ function Login() {
     try {
       // 登录请求，返回token
       const token = await authApi.login({
-        grantType: 'password',
+        grantType: 'admin-password',
         username: values.username,
         password: values.password,
       })

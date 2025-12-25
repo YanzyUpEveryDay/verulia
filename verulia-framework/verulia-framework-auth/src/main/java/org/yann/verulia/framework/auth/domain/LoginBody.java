@@ -22,7 +22,7 @@ public class LoginBody implements Serializable {
      * 默认值: password
      */
     @NotBlank(message = "授权类型不能为空")
-    private String grantType = "password";
+    private String grantType = "admin-password";
 
     /**
      * 用户名 (密码模式)
@@ -55,6 +55,11 @@ public class LoginBody implements Serializable {
      * 用户类型
      */
     private String userType = "system";
+
+    /**
+     * 来源（根据需要上传）
+     */
+    private String source;
 
     // 如果未来有微信登录，可能还需要:
     // private String openid;

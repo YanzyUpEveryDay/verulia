@@ -12,7 +12,6 @@ import org.yann.verulia.framework.auth.domain.LoginBody;
 import org.yann.verulia.framework.auth.domain.LoginConfig;
 import org.yann.verulia.framework.auth.exception.AuthException;
 import org.yann.verulia.framework.auth.strategy.IAuthStrategy;
-import org.yann.verulia.framework.core.exception.BusinessException;
 import org.yann.verulia.system.domain.entity.SysUser;
 import org.yann.verulia.system.event.LoginLogEvent;
 import org.yann.verulia.system.mapper.SysUserMapper;
@@ -25,14 +24,14 @@ import org.yann.verulia.system.mapper.SysUserMapper;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PasswordAuthStrategy implements IAuthStrategy {
+public class AdminPasswordAuthStrategy implements IAuthStrategy {
 
     private final SysUserMapper sysUserMapper;
     private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public String getLoginType() {
-        return "password";
+        return "admin-password";
     }
 
     @Override

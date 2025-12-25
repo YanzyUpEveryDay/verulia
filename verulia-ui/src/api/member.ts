@@ -50,7 +50,7 @@ export const memberApi = {
   /**
    * 修改会员状态
    */
-  updateStatus(id: number, status: number) {
+  updateStatus(id: number, status: string) {
     return httpClient.put<void>(`/member/${id}/status`, { status })
   },
 
