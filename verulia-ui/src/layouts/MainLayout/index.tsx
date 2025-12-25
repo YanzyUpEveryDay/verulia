@@ -8,6 +8,7 @@ import {
   UserOutlined,
   TeamOutlined,
   LogoutOutlined,
+  CrownOutlined,
 } from '@ant-design/icons'
 import { useAuthStore } from '@/store/auth'
 import styles from './MainLayout.module.css'
@@ -46,6 +47,18 @@ function MainLayout() {
       key: '/home',
       icon: <HomeOutlined />,
       label: '首页',
+    },
+    {
+      key: '/member',
+      icon: <CrownOutlined />,
+      label: '会员管理',
+      children: [
+        {
+          key: '/member/list',
+          icon: <UserOutlined />,
+          label: '会员列表',
+        },
+      ],
     },
     {
       key: '/system',

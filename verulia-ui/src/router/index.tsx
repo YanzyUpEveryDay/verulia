@@ -4,6 +4,7 @@ import Layout from '@/layouts/MainLayout'
 import Home from '@/pages/Home'
 import UserList from '@/pages/system/UserList'
 import RoleList from '@/pages/system/RoleList'
+import MemberList from '@/pages/member/MemberList'
 import AuthGuard from './AuthGuard'
 
 function AppRouter() {
@@ -15,6 +16,7 @@ function AppRouter() {
         <Route path="home" element={<Home />} />
         <Route path="system/user" element={<UserList />} />
         <Route path="system/role" element={<RoleList />} />
+        <Route path="member/list" element={<MemberList />} />
       </Route>
     </Routes>
   )

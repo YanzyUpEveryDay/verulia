@@ -51,6 +51,11 @@ public class LoginBody implements Serializable {
      */
     private String phonenumber;
 
+    /**
+     * 用户类型
+     */
+    private String userType = "system";
+
     // 如果未来有微信登录，可能还需要:
     // private String openid;
     // private String iv;

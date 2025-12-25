@@ -3,8 +3,11 @@ package org.yann.verulia.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.dao.SaTokenDao;
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
+import cn.hutool.v7.core.text.StrUtil;
 import cn.hutool.v7.core.util.ObjUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +21,9 @@ import org.yann.verulia.framework.auth.domain.LoginConfig;
 import org.yann.verulia.framework.auth.strategy.AuthStrategyFactory;
 import org.yann.verulia.framework.auth.strategy.IAuthStrategy;
 import org.yann.verulia.framework.core.domain.R;
+import org.yann.verulia.framework.core.exception.BusinessException;
 import org.yann.verulia.framework.core.service.SecurityContext;
+import org.yann.verulia.framework.security.StpKit;
 import org.yann.verulia.system.domain.vo.LoginVo;
 import org.yann.verulia.system.service.ISysLoginService;
 
@@ -44,6 +49,16 @@ public class AuthController {
     @SaIgnore
     @PostMapping("/login")
     public R<String> login(@Validated @RequestBody LoginBody loginBody) {
+        StpLogic st = null;
+        if (StrUtil.equals(loginBody.getUserType(), "system")) {
+            st = StpKit.DEFAULT;
+        } else if (StrUtil.equals(loginBody.getUserType(), "member")) {
+            st = StpKit.MEMBER;
+        }
+        if (null == st) {
+            throw new BusinessException("无效的登录用户类型");
+        }
+
         IAuthStrategy strategy = authStrategyFactory.getStrategy(loginBody.getGrantType());
         // 认证策略
         AuthUser authUser = strategy.authenticate(loginBody);
@@ -55,12 +70,15 @@ public class AuthController {
                     .setDeviceType(config.getDevice())
                     .setTimeout(config.getTimeout() != null ? config.getTimeout() : SaTokenDao.NEVER_EXPIRE)
                     .setActiveTimeout(config.getActiveTimeout() != null ? config.getActiveTimeout() : SaTokenDao.NEVER_EXPIRE)
-                    .setIsConcurrent(config.getIsConcurrent());
+                    .setIsConcurrent(config.getIsConcurrent())
+                    // #TODO 后续可以根据不同登录类型配置参数
+            ;
         }
-        StpUtil.login(authUser.getUserId(), parameter);
+        st.login(authUser.getUserId(), parameter);
         // 缓存用户信息
-        StpUtil.getSession().set("user", authUser);
-        return R.ok(StpUtil.getTokenValue());
+        st.getSession().set("user", authUser);
+        // 响应token
+        return R.ok(st.getTokenValue());
     }
 
     /**
