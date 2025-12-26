@@ -71,3 +71,26 @@ CREATE TABLE `adv_task`
     `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='奇遇任务库';
+
+DROP TABLE IF EXISTS `adv_adventure_log`;
+CREATE TABLE `adv_adventure_log`
+(
+    `log_id`           bigint(20)   NOT NULL AUTO_INCREMENT COMMENT '手账ID',
+    `user_id`          bigint(20)   NOT NULL COMMENT '冒险家ID',
+    `task_id`          bigint(20)   NOT NULL COMMENT '关联奇遇ID',
+    `adventure_date`   date         NOT NULL COMMENT '奇遇日期',
+    `status`           char(1)       DEFAULT '0' COMMENT '状态(0待接受 1进行中 2已完成)',
+    `swap_count`       int(4)        DEFAULT 0 COMMENT '换一换次数',
+    `checkin_img`      varchar(512)  DEFAULT NULL COMMENT '打卡照片',
+    `checkin_comment`  varchar(512)  DEFAULT NULL COMMENT '打卡心得',
+    `ai_reply`         varchar(512)  DEFAULT NULL COMMENT 'AI回信',
+    `deleted`          char(1)       DEFAULT '0' COMMENT '删除标志',
+    `audit_status`     char(1)       DEFAULT '0' COMMENT '审核状态 (0: 未审核 1：已审核)',
+    `create_by`        varchar(64)   DEFAULT '' COMMENT '创建者',
+    `create_time`      datetime      DEFAULT NULL COMMENT '抽取时间',
+    `update_by`        varchar(64)   DEFAULT '' COMMENT '更新者',
+    `update_time`      datetime      DEFAULT NULL COMMENT '更新时间',
+    `finish_time`      datetime      DEFAULT NULL COMMENT '完成时间',
+    PRIMARY KEY (`log_id`),
+    UNIQUE KEY `uk_user_date` (`user_id`, `adventure_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='奇遇手账记录';

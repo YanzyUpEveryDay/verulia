@@ -10,6 +10,7 @@ import UserList from '@/pages/system/UserList'
 import RoleList from '@/pages/system/RoleList'
 import MemberList from '@/pages/member/MemberList'
 import TaskList from '@/pages/adventure/TaskList'
+import LogList from '@/pages/adventure/LogList'
 
 import type { MenuProps } from 'antd'
 
@@ -52,6 +53,12 @@ export const routes: RouteConfig[] = [
         label: '奇遇任务',
         icon: <CompassOutlined />,
         element: <TaskList />,
+      },
+      {
+        path: '/adventure/log',
+        label: '手账记录',
+        icon: <CompassOutlined />,
+        element: <LogList />,
       },
     ],
   },
