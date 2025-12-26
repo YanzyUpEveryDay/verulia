@@ -18,5 +18,6 @@
 
     <modules>
         <module>verulia-system</module>
+        <module>verulia-adventure</module>
     </modules>
 </project>

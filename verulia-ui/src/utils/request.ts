@@ -33,7 +33,7 @@ class HttpClient {
                 const token = tokenStorage.getToken()
                 if (token) {
                     // Sa-Token配置: token-name=satoken
-                    config.headers['satoken'] = `Bearer ${token}`
+                    config.headers['Authorization'] = `Bearer ${token}`
                 }
                 return config
             },

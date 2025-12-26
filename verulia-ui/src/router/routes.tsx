@@ -3,11 +3,13 @@ import {
   UserOutlined,
   TeamOutlined,
   CrownOutlined,
+  CompassOutlined,
 } from '@ant-design/icons'
 import Home from '@/pages/Home'
 import UserList from '@/pages/system/UserList'
 import RoleList from '@/pages/system/RoleList'
 import MemberList from '@/pages/member/MemberList'
+import TaskList from '@/pages/adventure/TaskList'
 
 import type { MenuProps } from 'antd'
 
@@ -39,6 +41,19 @@ export const routes: RouteConfig[] = [
     label: '首页',
     icon: <HomeOutlined />,
     element: <Home />,
+  },
+  {
+    path: '/adventure',
+    label: '每日奇遇',
+    icon: <CompassOutlined />,
+    children: [
+      {
+        path: '/adventure/task',
+        label: '奇遇任务',
+        icon: <CompassOutlined />,
+        element: <TaskList />,
+      },
+    ],
   },
   {
     path: '/member',

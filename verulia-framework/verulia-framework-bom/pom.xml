@@ -56,6 +56,13 @@
                 <artifactId>verulia-system</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+
+            <!-- 奇遇模块 -->
+            <dependency>
+                <groupId>org.yann</groupId>
+                <artifactId>verulia-adventure</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

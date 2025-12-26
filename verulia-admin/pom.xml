@@ -28,6 +28,11 @@
             <groupId>org.yann</groupId>
             <artifactId>verulia-system</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.yann</groupId>
+            <artifactId>verulia-adventure</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
