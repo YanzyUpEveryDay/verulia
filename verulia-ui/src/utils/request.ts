@@ -3,6 +3,9 @@ import type {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
 import { message, Modal } from 'antd'
 import { tokenStorage } from './storage'
 
+// 防止重复弹出登录过期提示
+let isShowingLoginExpiredModal = false
+
 // 后端统一响应结构
 interface ApiResponse<T = any> {
     code: number
@@ -62,14 +65,26 @@ class HttpClient {
                     case 401:
                         // 未授权,清除认证信息并跳转登录
                         tokenStorage.removeToken()
-                        Modal.warning({
-                            title: '登录已过期',
-                            content: '您的登录信息已过期,请重新登录',
-                            okText: '确认',
-                            onOk: () => {
-                                window.location.href = '/login'
-                            },
-                        })
+                        // 防止多个401请求同时触发多个弹窗
+                        if (!isShowingLoginExpiredModal) {
+                            isShowingLoginExpiredModal = true
+                            Modal.warning({
+                                title: '登录已过期',
+                                content: '您的登录信息已过期,请重新登录',
+                                okText: '确认',
+                                centered: true,
+                                onOk: () => {
+                                    isShowingLoginExpiredModal = false
+                                    // 使用 React Router 导航，避免整页刷新
+                                    // 保存当前路径，登录后可以返回
+                                    const currentPath = window.location.pathname
+                                    window.location.href = `/login?redirect=${encodeURIComponent(currentPath)}`
+                                },
+                                onCancel: () => {
+                                    isShowingLoginExpiredModal = false
+                                },
+                            })
+                        }
                         return Promise.reject(new Error(data.message || '未授权'))
 
                     case 403:

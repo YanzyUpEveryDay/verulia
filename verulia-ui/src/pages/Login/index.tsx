@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Form, Input, Button, message, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
 import { authApi } from '@/api/auth'
 import { tokenStorage } from '@/utils/storage'
 import styles from './Login.module.css'
@@ -17,9 +17,10 @@ function Login() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const navigate = useNavigate()
   const location = useLocation()
+  const [searchParams] = useSearchParams()
 
-  // 获取跳转前的路径，登录成功后跳回去
-  const from = (location.state as any)?.from || '/home'
+  // 优先从 URL 查询参数获取重定向地址，其次从 state 获取，默认跳转到首页
+  const redirectUrl = searchParams.get('redirect') || (location.state as any)?.from || '/home'
 
   // 鼠标跟随效果
   useEffect(() => {
@@ -45,7 +46,7 @@ function Login() {
       tokenStorage.setToken(token)
       
       message.success('登录成功！')
-      navigate(from, { replace: true })
+      navigate(redirectUrl, { replace: true })
     } catch (error: any) {
       // 错误提示已在拦截器中统一处理
       console.error('登录失败:', error)

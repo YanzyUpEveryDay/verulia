@@ -42,7 +42,12 @@ function AuthGuard({ children }: AuthGuardProps) {
 
   // 没有 token，跳转到登录页
   if (!hasToken) {
-    return <Navigate to="/login" state={{ from: location.pathname }} replace />
+    // 保存当前路径作为登录后的重定向地址
+    // 如果是首页或根路径，不需要重定向参数
+    const needRedirect = location.pathname !== '/' && location.pathname !== '/home'
+    const redirectUrl = needRedirect ? `/login?redirect=${encodeURIComponent(location.pathname)}` : '/login'
+    
+    return <Navigate to={redirectUrl} replace />
   }
 
   // 正在加载用户信息
