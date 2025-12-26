@@ -48,4 +48,12 @@ public interface IAdvTaskService extends IService<AdvTask> {
      * @param id 奇遇任务ID
      */
     void deleteTask(Long id);
+
+    /**
+     * 获取随机奇遇任务
+     *
+     * @param category 奇遇类型（可选）
+     * @return 随机奇遇任务
+     */
+    AdvTaskDtos.Result getRandomTask(String category);
 }
