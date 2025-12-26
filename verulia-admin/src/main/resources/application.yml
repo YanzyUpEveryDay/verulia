@@ -23,9 +23,14 @@ spring:
   threads:
     virtual:
       enabled: true
-  # main
+  # 支持重写bean
   main:
     allow-bean-definition-overriding: true
+  # jackson配置
+  jackson:
+    # 对于date生效  LocalDateTime不生效
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   # Redis 配置
   data:
     redis:
