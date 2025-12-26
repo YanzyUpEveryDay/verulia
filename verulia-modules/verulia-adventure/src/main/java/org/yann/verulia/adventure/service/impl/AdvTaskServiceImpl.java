@@ -16,7 +16,6 @@ import org.yann.verulia.framework.core.domain.PageResult;
 import org.yann.verulia.framework.core.exception.BusinessException;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -86,23 +85,11 @@ public class AdvTaskServiceImpl extends ServiceImpl<AdvTaskMapper, AdvTask> impl
 
     @Override
     public AdvTaskDtos.Result getRandomTask(String category) {
-        LambdaQueryWrapper<AdvTask> wrapper = new LambdaQueryWrapper<>();
-        // 只查询启用的任务
-        wrapper.eq(AdvTask::getStatus, "1");
-        // 如果指定了类型，按类型过滤
-        if (StrUtil.isNotBlank(category)) {
-            wrapper.eq(AdvTask::getCategory, category);
-        }
-        
-        List<AdvTask> taskList = this.list(wrapper);
-        if (taskList.isEmpty()) {
+        // 使用数据库层面的随机查询，避免全量加载到内存
+        AdvTask randomTask = baseMapper.selectRandomTask(category);
+        if (randomTask == null) {
             throw new BusinessException("暂无可用的奇遇任务");
         }
-        
-        // 随机选择一个任务
-        Random random = new Random();
-        AdvTask randomTask = taskList.get(random.nextInt(taskList.size()));
-        
         return convertToResult(randomTask);
     }
 
